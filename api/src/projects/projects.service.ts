@@ -2,37 +2,35 @@ import { Injectable, NotFoundException } from "@nestjs/common"
 import { CreateProjectDto } from "./dto/create-project.dto"
 import { UpdateProjectDto } from "./dto/update-project.dto"
 import { Project } from "./project.entity"
-import { ProgrammingLanguage } from "./programming-language.enum"
 import { ReplaceProjectDto } from "./dto/replace-project.dto"
+import { InjectRepository } from "@nestjs/typeorm"
+import { Repository } from "typeorm"
 
 @Injectable()
 export class ProjectsService {
-  projects: Project[] = [
-    {
-      id: 0,
-      name: "Buggy",
-      programmingLanguage: ProgrammingLanguage.TypeScript,
-    },
-  ]
+  constructor(
+    @InjectRepository(Project)
+    private readonly projectRepo: Repository<Project>,
+  ) {}
 
-  create(createProjectDto: CreateProjectDto) {
-    const newProject: Project = {
-      id: this.projects.length,
-      name: createProjectDto.name,
-      programmingLanguage: createProjectDto.programmingLanguage,
-    }
+  async create(createProjectDto: CreateProjectDto) {
+    const newProject = this.projectRepo.create(createProjectDto)
 
-    this.projects.push(newProject)
+    await this.projectRepo.save(newProject)
 
     return newProject
   }
 
-  findAll() {
-    return this.projects
+  async findAll() {
+    const projects = await this.projectRepo.find()
+
+    return projects
   }
 
-  findOne(id: number) {
-    const project = this.projects.find(p => p.id === id)
+  async findOne(id: number) {
+    const project = await this.projectRepo.findOne({
+      where: { id },
+    })
 
     if (!project)
       throw new NotFoundException(`Project with ID: ${id} was not found!`)
@@ -40,18 +38,20 @@ export class ProjectsService {
     return project
   }
 
-  replace(id: number, replaceProjectDto: ReplaceProjectDto) {
-    const projectToReplace = this.findOne(id)
+  async replace(id: number, replaceProjectDto: ReplaceProjectDto) {
+    const projectToReplace = await this.findOne(id)
 
     // Replacing...
     projectToReplace.name = replaceProjectDto.name
     projectToReplace.programmingLanguage = replaceProjectDto.programmingLanguage
 
+    await this.projectRepo.save(projectToReplace)
+
     return projectToReplace
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    const projectToUpdate = this.findOne(id)
+  async update(id: number, updateProjectDto: UpdateProjectDto) {
+    const projectToUpdate = await this.findOne(id)
 
     // Updating...
     if (updateProjectDto.name !== undefined)
@@ -59,17 +59,16 @@ export class ProjectsService {
     if (updateProjectDto.programmingLanguage !== undefined)
       projectToUpdate.programmingLanguage = updateProjectDto.programmingLanguage
 
+    await this.projectRepo.save(projectToUpdate)
+
     return projectToUpdate
   }
 
-  remove(id: number) {
-    const index = this.projects.findIndex(p => p.id === id)
+  async remove(id: number) {
+    const projectToRemove = await this.findOne(id)
 
-    if (index === -1)
-      throw new NotFoundException(`Project with ID: ${id} was not found!`)
+    await this.projectRepo.remove(projectToRemove)
 
-    const [removed] = this.projects.splice(index, 1)
-
-    return removed
+    return projectToRemove
   }
 }
