@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   Put,
+  Render,
 } from "@nestjs/common"
 import { BugsService } from "./bugs.service"
 import { CreateBugDto } from "./dto/create-bug.dto"
@@ -20,6 +21,18 @@ import { ApiOperation } from "@nestjs/swagger"
 @Controller("bugs")
 export class BugsController {
   constructor(private readonly bugsService: BugsService) {}
+
+  @Get("view-all")
+  @Render("bugs")
+  async veiwAll() {
+    const bugs = await this.bugsService.findAll()
+
+    return {
+      bugs: plainToInstance(BugResponseDto, bugs, {
+        excludeExtraneousValues: true,
+      }),
+    }
+  }
 
   @ApiOperation({ summary: "Create a bug" })
   @Post()

@@ -3,10 +3,25 @@ import { AppModule } from "./app.module"
 import { ValidationPipe } from "@nestjs/common"
 import { apiReference } from "@scalar/nestjs-api-reference"
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
+import { NestExpressApplication } from "@nestjs/platform-express"
+import { join } from "node:path"
+import hbs from "hbs"
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
+  addGlobalValidation(app)
+  enableCORS(app)
+  configApiDocs(app)
+  configMvcWithHbs(app)
+
+  app.setGlobalPrefix("api")
+
+  await app.listen(process.env.PORT ?? 3001)
+}
+bootstrap()
+
+function addGlobalValidation(app: NestExpressApplication) {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -17,17 +32,22 @@ async function bootstrap() {
       },
     }),
   )
+}
 
+function enableCORS(app: NestExpressApplication) {
   // Enable CORS for all origins, all methods, all headers
   app.enableCors({
     origin: "*", // allow requests from any origin
     methods: "*", // allow all HTTP methods (GET, POST, etc.)
     allowedHeaders: "*", // allow all headers
   })
+}
 
+function configApiDocs(app: NestExpressApplication) {
   const config = new DocumentBuilder()
     .setTitle("Buggy API")
     .addServer("http://localhost:3000/api")
+    .addServer("http://localhost:3001/api")
     .setVersion("1.0")
     // .addBearerAuth(
     //   {
@@ -62,9 +82,25 @@ async function bootstrap() {
       },
     }),
   )
-
-  app.setGlobalPrefix("api")
-
-  await app.listen(process.env.PORT ?? 3000)
 }
-bootstrap()
+
+function configMvcWithHbs(app: NestExpressApplication) {
+  app.useStaticAssets(join(__dirname, "..", "..", "public"))
+  app.setBaseViewsDir(join(__dirname, "..", "..", "views"))
+  app.setViewEngine("hbs")
+
+  hbs.registerHelper("priorityClass", function (priority: string) {
+    switch (priority) {
+      case "CRITICAL":
+        return "danger"
+      case "HIGH":
+        return "warning"
+      case "MEDIUM":
+        return "info"
+      case "LOW":
+        return "success"
+      default:
+        return "secondary"
+    }
+  })
+}
