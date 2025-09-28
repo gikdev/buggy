@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common"
 import { ProjectsModule } from "./projects/projects.module"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { join } from "node:path"
+import { BugsModule } from "./bugs/bugs.module"
 
 const typeOrmModule = TypeOrmModule.forRootAsync({
   imports: [],
@@ -10,11 +11,11 @@ const typeOrmModule = TypeOrmModule.forRootAsync({
     type: "sqlite",
     synchronize: true,
     autoLoadEntities: true,
-    database: join(__dirname, "..", "db.sqlite"),
+    database: join(__dirname, "..", "..", "db.sqlite"),
   }),
 })
 
 @Module({
-  imports: [ProjectsModule, typeOrmModule],
+  imports: [ProjectsModule, typeOrmModule, BugsModule],
 })
 export class AppModule {}
