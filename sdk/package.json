@@ -1,8 +1,8 @@
 {
-  "name": "sdk",
-  "version": "1.0.0",
+  "name": "@gikdev/buggy-sdk",
+  "version": "1.0.1",
   "type": "module",
-  "private": true,
+  "private": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

@@ -18,6 +18,13 @@ async function bootstrap() {
     }),
   )
 
+  // Enable CORS for all origins, all methods, all headers
+  app.enableCors({
+    origin: "*", // allow requests from any origin
+    methods: "*", // allow all HTTP methods (GET, POST, etc.)
+    allowedHeaders: "*", // allow all headers
+  })
+
   const config = new DocumentBuilder()
     .setTitle("Buggy API")
     .addServer("http://localhost:3000/api")
