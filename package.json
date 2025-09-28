@@ -1,0 +1,11 @@
+{
+  "name": "buggy",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {},
+  "author": "Bahrami85.ir",
+  "license": "UNLICENSED",
+  "workspaces": [
+    "api"
+  ]
+}
