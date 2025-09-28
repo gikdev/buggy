@@ -5,7 +5,7 @@ import { DataSource } from "typeorm"
 export async function seedProjects(dataSource:DataSource) {
   const repo = dataSource.getRepository(Project)
 
-  const projects: Omit<Project, "id">[] = [
+  const projects: Pick<Project, "name" | "programmingLanguage">[] = [
     {
       name: "Buggy API",
       programmingLanguage: ProgrammingLanguage.TypeScript,
