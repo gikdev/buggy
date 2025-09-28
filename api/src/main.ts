@@ -47,8 +47,8 @@ async function bootstrap() {
       // authentication: {
       //   preferredSecurityScheme: "bearer",
       // },
-      theme: "deepSpace",
-      layout: "classic",
+      theme: "fastify",
+      layout: "modern",
       defaultHttpClient: {
         targetKey: "js",
         clientKey: "fetch",

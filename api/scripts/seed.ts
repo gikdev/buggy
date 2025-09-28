@@ -1,5 +1,5 @@
 import { join } from "node:path"
-import { Project } from "src/projects/project.entity"
+import { ProjectEntity } from "src/projects/project.entity"
 import { DataSource } from "typeorm"
 import { seedProjects } from "./seedProjects"
 
@@ -7,7 +7,7 @@ async function seed() {
   const dataSource = new DataSource({
     type: "sqlite",
     database: join(__dirname, "..", "db.sqlite"),
-    entities: [Project],
+    entities: [ProjectEntity],
     synchronize: true,
   })
 

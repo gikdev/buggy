@@ -10,21 +10,21 @@ import { BugPriority } from "./enum/bug-priority.enum"
 import { BugStatus } from "./enum/bug-status.enum"
 
 @Entity()
-export class Bug {
+export class BugEntity {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ type: "varchar" })
   title: string
 
   @Column({ type: "text", nullable: true })
-  description: string
+  description: string | null
 
   @Column({ type: "text", nullable: true })
-  stack: string
+  stack: string | null
 
-  @Column({ nullable: true })
-  attachmentUrl: string
+  @Column({ type: "varchar", nullable: true })
+  attachmentUrl: string | null
 
   @Column({
     type: "simple-enum",

@@ -8,22 +8,14 @@ import {
 import { ProgrammingLanguage } from "./programming-language.enum"
 
 @Entity()
-export class Project {
+export class ProjectEntity {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column({
-    type: "varchar",
-    length: 128,
-    nullable: false,
-  })
+  @Column({ type: "varchar" })
   name: string
 
-  @Column({
-    type: "varchar",
-    nullable: false,
-    length: 64,
-  })
+  @Column({ type: "varchar" })
   programmingLanguage: ProgrammingLanguage
 
   @CreateDateColumn()
