@@ -17,6 +17,7 @@ import { ReplaceBugDto } from "./dto/replace-bug.dto"
 import { plainToInstance } from "class-transformer"
 import { BugResponseDto } from "./dto/bug-response.dto"
 import { ApiOperation } from "@nestjs/swagger"
+import { defaultInstanceOptions } from "src/shared/dto"
 
 @Controller("bugs")
 export class BugsController {
@@ -28,9 +29,7 @@ export class BugsController {
     const bugs = await this.bugsService.findAll()
 
     return {
-      bugs: plainToInstance(BugResponseDto, bugs, {
-        excludeExtraneousValues: true,
-      }),
+      bugs: plainToInstance(BugResponseDto, bugs, defaultInstanceOptions),
     }
   }
 
@@ -39,9 +38,7 @@ export class BugsController {
   async create(@Body() createBugDto: CreateBugDto) {
     const bug = await this.bugsService.create(createBugDto)
 
-    return plainToInstance(BugResponseDto, bug, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(BugResponseDto, bug, defaultInstanceOptions)
   }
 
   @ApiOperation({ summary: "Get all bugs" })
@@ -49,9 +46,7 @@ export class BugsController {
   async findAll() {
     const bugs = await this.bugsService.findAll()
 
-    return plainToInstance(BugResponseDto, bugs, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(BugResponseDto, bugs, defaultInstanceOptions)
   }
 
   @ApiOperation({ summary: "Get a bug by ID" })
@@ -59,9 +54,7 @@ export class BugsController {
   findOne(@Param("id", ParseIntPipe) id: number) {
     const bug = this.bugsService.findOne(id)
 
-    return plainToInstance(BugResponseDto, bug, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(BugResponseDto, bug, defaultInstanceOptions)
   }
 
   @ApiOperation({ summary: "Replace a bug by ID" })
@@ -72,9 +65,7 @@ export class BugsController {
   ) {
     const bug = await this.bugsService.replace(id, replaceBugDto)
 
-    return plainToInstance(BugResponseDto, bug, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(BugResponseDto, bug, defaultInstanceOptions)
   }
 
   @ApiOperation({ summary: "Update a bug by ID" })
@@ -85,9 +76,7 @@ export class BugsController {
   ) {
     const bug = await this.bugsService.update(id, updateBugDto)
 
-    return plainToInstance(BugResponseDto, bug, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(BugResponseDto, bug, defaultInstanceOptions)
   }
 
   @ApiOperation({ summary: "Delete a bug by ID" })
@@ -95,8 +84,6 @@ export class BugsController {
   async remove(@Param("id", ParseIntPipe) id: number) {
     const bug = await this.bugsService.remove(id)
 
-    return plainToInstance(BugResponseDto, bug, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(BugResponseDto, bug, defaultInstanceOptions)
   }
 }

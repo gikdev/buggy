@@ -16,6 +16,7 @@ import { plainToInstance } from "class-transformer"
 import { ProjectResponseDto } from "./dto/project-response.dto"
 import { ReplaceProjectDto } from "./dto/replace-project.dto"
 import { ApiOperation } from "@nestjs/swagger"
+import { defaultInstanceOptions } from "src/shared/dto"
 
 @Controller("projects")
 export class ProjectsController {
@@ -26,9 +27,11 @@ export class ProjectsController {
   create(@Body() createProjectDto: CreateProjectDto) {
     const newProject = this.projectsService.create(createProjectDto)
 
-    return plainToInstance(ProjectResponseDto, newProject, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(
+      ProjectResponseDto,
+      newProject,
+      defaultInstanceOptions,
+    )
   }
 
   @ApiOperation({ summary: "Get all projects" })
@@ -36,9 +39,7 @@ export class ProjectsController {
   findAll() {
     const projects = this.projectsService.findAll()
 
-    return plainToInstance(ProjectResponseDto, projects, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(ProjectResponseDto, projects, defaultInstanceOptions)
   }
 
   @ApiOperation({ summary: "Get a project by ID" })
@@ -46,9 +47,7 @@ export class ProjectsController {
   findOne(@Param("id", ParseIntPipe) id: number) {
     const project = this.projectsService.findOne(id)
 
-    return plainToInstance(ProjectResponseDto, project, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(ProjectResponseDto, project, defaultInstanceOptions)
   }
 
   @ApiOperation({ summary: "Replace a project by ID" })
@@ -59,9 +58,11 @@ export class ProjectsController {
   ) {
     const replacedProject = this.projectsService.replace(id, replaceProjectDto)
 
-    return plainToInstance(ProjectResponseDto, replacedProject, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(
+      ProjectResponseDto,
+      replacedProject,
+      defaultInstanceOptions,
+    )
   }
 
   @ApiOperation({ summary: "Update a project by ID" })
@@ -72,9 +73,11 @@ export class ProjectsController {
   ) {
     const updatedProject = this.projectsService.update(id, updateProjectDto)
 
-    return plainToInstance(ProjectResponseDto, updatedProject, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(
+      ProjectResponseDto,
+      updatedProject,
+      defaultInstanceOptions,
+    )
   }
 
   @ApiOperation({ summary: "Delete a project by ID" })
@@ -82,8 +85,10 @@ export class ProjectsController {
   remove(@Param("id", ParseIntPipe) id: number) {
     const removedProject = this.projectsService.remove(id)
 
-    return plainToInstance(ProjectResponseDto, removedProject, {
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(
+      ProjectResponseDto,
+      removedProject,
+      defaultInstanceOptions,
+    )
   }
 }
