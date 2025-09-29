@@ -46,7 +46,6 @@ function enableCORS(app: NestExpressApplication) {
 function configApiDocs(app: NestExpressApplication) {
   const config = new DocumentBuilder()
     .setTitle("Buggy API")
-    .addServer("http://localhost:3000/api")
     .addServer("http://localhost:3001/api")
     .setVersion("1.0")
     // .addBearerAuth(
