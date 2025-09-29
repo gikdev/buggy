@@ -8,7 +8,7 @@ import {
 import { ProgrammingLanguage } from "./programming-language.enum"
 
 @Entity()
-export class ProjectEntity {
+export class Project {
   @PrimaryGeneratedColumn()
   id: number
 

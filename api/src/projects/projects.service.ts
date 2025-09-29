@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 import { CreateProjectDto } from "./dto/create-project.dto"
 import { UpdateProjectDto } from "./dto/update-project.dto"
-import { ProjectEntity } from "./project.entity"
+import { Project } from "./project.entity"
 import { ReplaceProjectDto } from "./dto/replace-project.dto"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
@@ -9,8 +9,8 @@ import { Repository } from "typeorm"
 @Injectable()
 export class ProjectsService {
   constructor(
-    @InjectRepository(ProjectEntity)
-    private readonly projectRepo: Repository<ProjectEntity>,
+    @InjectRepository(Project)
+    private readonly projectRepo: Repository<Project>,
   ) {}
 
   async create(createProjectDto: CreateProjectDto) {

@@ -1,16 +1,16 @@
 import {
-  Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  Entity,
 } from "typeorm"
 import { BugReportSource } from "./enum/bug-report-source.enum"
 import { BugPriority } from "./enum/bug-priority.enum"
 import { BugStatus } from "./enum/bug-status.enum"
 
 @Entity()
-export class BugEntity {
+export class Bug {
   @PrimaryGeneratedColumn()
   id: number
 

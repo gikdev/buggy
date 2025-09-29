@@ -3,7 +3,7 @@ import { CreateBugDto } from "./dto/create-bug.dto"
 import { UpdateBugDto } from "./dto/update-bug.dto"
 import { ReplaceBugDto } from "./dto/replace-bug.dto"
 import { InjectRepository } from "@nestjs/typeorm"
-import { BugEntity } from "./bug.entity"
+import { Bug } from "./bug.entity"
 import { Repository } from "typeorm"
 import { BugPriority } from "./enum/bug-priority.enum"
 import { BugStatus } from "./enum/bug-status.enum"
@@ -11,8 +11,8 @@ import { BugStatus } from "./enum/bug-status.enum"
 @Injectable()
 export class BugsService {
   constructor(
-    @InjectRepository(BugEntity)
-    private readonly bugRepo: Repository<BugEntity>,
+    @InjectRepository(Bug)
+    private readonly bugRepo: Repository<Bug>,
   ) {}
 
   async findAll() {

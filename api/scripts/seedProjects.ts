@@ -1,11 +1,11 @@
 import { ProgrammingLanguage } from "src/projects/programming-language.enum"
-import { ProjectEntity } from "src/projects/project.entity"
+import { Project } from "src/projects/project.entity"
 import { DataSource } from "typeorm"
 
 export async function seedProjects(dataSource:DataSource) {
-  const repo = dataSource.getRepository(ProjectEntity)
+  const repo = dataSource.getRepository(Project)
 
-  const projects: Pick<ProjectEntity, "name" | "programmingLanguage">[] = [
+  const projects: Pick<Project, "name" | "programmingLanguage">[] = [
     {
       name: "Buggy API",
       programmingLanguage: ProgrammingLanguage.TypeScript,

@@ -1,19 +1,22 @@
 import { join } from "node:path"
-import { ProjectEntity } from "src/projects/project.entity"
+import { Project } from "src/projects/project.entity"
 import { DataSource } from "typeorm"
 import { seedProjects } from "./seedProjects"
+import { seedBugs } from "./seedBugs"
+import { Bug } from "src/bugs/bug.entity"
 
 async function seed() {
   const dataSource = new DataSource({
     type: "sqlite",
     database: join(__dirname, "..", "db.sqlite"),
-    entities: [ProjectEntity],
+    entities: [Project, Bug],
     synchronize: true,
   })
 
   await dataSource.initialize()
 
   await seedProjects(dataSource)
+  await seedBugs(dataSource)
 
   console.log("Seeding complete!")
   await dataSource.destroy()
